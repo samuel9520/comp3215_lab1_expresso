@@ -1,0 +1,136 @@
+RM := rm -rf
+
+INCLUDECORE = -I"C:\Users\shasa\Documents\MCUXpressoIDE_10.0.2_411\workspace\Lab1\source" -I"C:\Users\shasa\Documents\MCUXpressoIDE_10.0.2_411\workspace\Lab1" -I"C:\Users\shasa\Documents\MCUXpressoIDE_10.0.2_411\workspace\Lab1\freertos" -I"C:\Users\shasa\Documents\MCUXpressoIDE_10.0.2_411\workspace\Lab1\utilities" -I"C:\Users\shasa\Documents\MCUXpressoIDE_10.0.2_411\workspace\Lab1\startup" -I"C:\Users\shasa\Documents\MCUXpressoIDE_10.0.2_411\workspace\Lab1\CMSIS" -I"C:\Users\shasa\Documents\MCUXpressoIDE_10.0.2_411\workspace\Lab1\drivers" -I"C:\Users\shasa\Documents\MCUXpressoIDE_10.0.2_411\workspace\Lab1\frdmkw41z"
+
+INCLUDEBOARD = -I"C:\Users\shasa\Documents\MCUXpressoIDE_10.0.2_411\workspace\Lab1\board"
+
+OBJS += \
+./utilities/fsl_debug_console.o \
+./utilities/fsl_notifier.o \
+./startup/startup_mkw41z4.o \
+./source/Lab1.o \
+./freertos/croutine.o \
+./freertos/event_groups.o \
+./freertos/fsl_tickless_lptmr.o \
+./freertos/fsl_tickless_systick.o \
+./freertos/heap_4.o \
+./freertos/list.o \
+./freertos/port.o \
+./freertos/queue.o \
+./freertos/tasks.o \
+./freertos/timers.o \
+./frdmkw41z/board.o \
+./frdmkw41z/clock_config.o \
+./frdmkw41z/pin_mux.o \
+./drivers/fsl_clock.o \
+./drivers/fsl_common.o \
+./drivers/fsl_flash.o \
+./drivers/fsl_gpio.o \
+./drivers/fsl_lptmr.o \
+./drivers/fsl_lpuart.o \
+./drivers/fsl_lpuart_freertos.o \
+./drivers/fsl_smc.o \
+./CMSIS/system_MKW41Z4.o 
+
+C_DEPS += \
+./utilities/fsl_debug_console.d \
+./utilities/fsl_notifier.d \
+./startup/startup_mkw41z4.d \
+./source/Lab1.d \
+./freertos/croutine.d \
+./freertos/event_groups.d \
+./freertos/fsl_tickless_lptmr.d \
+./freertos/fsl_tickless_systick.d \
+./freertos/heap_4.d \
+./freertos/list.d \
+./freertos/port.d \
+./freertos/queue.d \
+./freertos/tasks.d \
+./freertos/timers.d \
+./frdmkw41z/board.d \
+./frdmkw41z/clock_config.d \
+./frdmkw41z/pin_mux.d \
+./drivers/fsl_clock.d \
+./drivers/fsl_common.d \
+./drivers/fsl_flash.d \
+./drivers/fsl_gpio.d \
+./drivers/fsl_lptmr.d \
+./drivers/fsl_lpuart.d \
+./drivers/fsl_lpuart_freertos.d \
+./drivers/fsl_smc.d \
+./CMSIS/system_MKW41Z4.d 
+
+# All Target
+all: Lab1.axf
+
+# Tool invocations
+Lab1.axf: $(OBJS)
+	@echo 'Building target: $@'
+	@echo 'Invoking: MCU Linker'
+	arm-none-eabi-gcc -nostdlib -Xlinker -Map="Lab1.map" -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m0plus -mthumb -T Lab1_Debug.ld -o "Lab1.axf" $(OBJS)
+	@echo 'Finished building target: $@'
+	@echo ' '
+	$(MAKE) --no-print-directory post-build
+
+# Subdirectories are built individually
+utilities/%.o: ../utilities/%.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__USE_CMSIS -DCPU_MKW41Z512CAT4 -DCPU_MKW41Z512CAT4_cm0plus $(INCLUDECORE) -c -ffunction-sections -fdata-sections -mcpu=cortex-m0plus -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+startup/%.o: ../startup/%.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__USE_CMSIS -DCPU_MKW41Z512CAT4 -DCPU_MKW41Z512CAT4_cm0plus $(INCLUDECORE) -c -ffunction-sections -fdata-sections -mcpu=cortex-m0plus -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+source/%.o: ../source/%.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__USE_CMSIS -DCPU_MKW41Z512CAT4 -DCPU_MKW41Z512CAT4_cm0plus $(INCLUDECORE) -c -ffunction-sections -fdata-sections -mcpu=cortex-m0plus -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+freertos/%.o: ../freertos/%.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__USE_CMSIS -DCPU_MKW41Z512CAT4 -DCPU_MKW41Z512CAT4_cm0plus $(INCLUDECORE) -c -ffunction-sections -fdata-sections -mcpu=cortex-m0plus -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+frdmkw41z/%.o: ../frdmkw41z/%.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__USE_CMSIS -DCPU_MKW41Z512CAT4 -DCPU_MKW41Z512CAT4_cm0plus $(INCLUDECORE) -c -ffunction-sections -fdata-sections -mcpu=cortex-m0plus -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+drivers/%.o: ../drivers/%.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__USE_CMSIS -DCPU_MKW41Z512CAT4 -DCPU_MKW41Z512CAT4_cm0plus $(INCLUDECORE) -c -ffunction-sections -fdata-sections -mcpu=cortex-m0plus -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+	
+CMSIS/%.o: ../CMSIS/%.c
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU C Compiler'
+	arm-none-eabi-gcc -D__USE_CMSIS -DCPU_MKW41Z512CAT4 -DCPU_MKW41Z512CAT4_cm0plus $(INCLUDECORE) -c -ffunction-sections -fdata-sections -mcpu=cortex-m0plus -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+# Other Targets
+clean:
+	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) Lab1.axf
+	-@echo ' '
+
+post-build:
+	-@echo 'Performing post-build steps'
+	arm-none-eabi-size "Lab1.axf"
+	-@echo ' '
+
+.PHONY: all clean dependents
+.SECONDARY: post-build
